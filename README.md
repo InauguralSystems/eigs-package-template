@@ -17,12 +17,14 @@ by anyone with `eigenscript --pkg add`.
 
 Two rules the package tool relies on:
 
-1. The file at the repo root named `<name>.eigs` is the entry point.
+1. The file at the repo root named `<leaf>.eigs` is the entry point.
    Its top-level bindings become the importable surface.
 2. By convention `eigs.json`'s `name` field equals the entry-point
-   filename without `.eigs`. The consumer's `--pkg add <name> ...`
-   determines which file the resolver looks for — if the repo's
-   entry-point name doesn't match, the consumer's `import` fails at
+   filename without `.eigs` — call it the *leaf*. A consumer adds the
+   package as `--pkg add <owner>/<leaf> <url>`, and the resolver
+   looks for `eigs_modules/<leaf>/<leaf>.eigs`. If the repo's
+   entry-point filename doesn't match the `<leaf>` portion of the
+   consumer's `--pkg add` invocation, `import <leaf>` fails at
    runtime. Keep them aligned.
 
 Names defined with a leading underscore (`_helper`) stay private — they
@@ -76,11 +78,14 @@ a new tag over moving an existing one.
 Once pushed and tagged:
 
 ```sh
-eigenscript --pkg add mypkg https://github.com/you/eigs-mypkg v0.1.0
+eigenscript --pkg add you/mypkg https://github.com/you/eigs-mypkg v0.1.0
 ```
 
-This clones the repo into `eigs_modules/mypkg/`, records the resolved
-commit in `eigs.lock.json`, and lets the consumer's code do:
+Package identifiers must be `<owner>/<name>` — the tool rejects bare
+names like `mypkg`. The on-disk dir and the `import` form still use
+the leaf only, so this clones into `eigs_modules/mypkg/`, records the
+resolved commit (under the key `"you/mypkg"`) in `eigs.lock.json`,
+and lets the consumer's code do:
 
 ```eigenscript
 import mypkg
