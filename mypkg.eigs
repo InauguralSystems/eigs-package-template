@@ -4,7 +4,7 @@
 #   - eigs.json at the root (name, version, deps)
 #   - <name>.eigs at the root (this file) as the entry point
 #
-# When a consumer runs `eigenscript --pkg add mypkg <git-url> <tag>`,
+# When a consumer runs `eigenscript --pkg add <owner>/mypkg <git-url> [tag]`,
 # the tool clones this repo into eigs_modules/mypkg/, and their code
 # can then `import mypkg` and reach the names defined here as
 # `mypkg.greet`, `mypkg.VERSION`, etc.
