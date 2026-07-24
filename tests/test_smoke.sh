@@ -34,10 +34,13 @@ fi
 echo "PASS: import $PKG_NAME → greet round-trips"
 
 # Private names (leading _) should not appear in the module's keys.
+# NB: use `list_contains` (list membership), NOT `contains` — `contains` is
+# string-only and returns 0 for any list operand, so `contains of [ks, ...]`
+# would pass VACUOUSLY even if the private name leaked.
 cat > "$TMP/app2.eigs" <<EOF
 import $PKG_NAME
 ks is keys of $PKG_NAME
-if (contains of [ks, "_internal_marker"]) == 1:
+if (list_contains of [ks, "_internal_marker"]) == 1:
     print of "LEAKED"
 else:
     print of "private"
