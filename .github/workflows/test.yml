@@ -18,5 +18,10 @@ jobs:
           make -C "$RUNNER_TEMP/eigs" -s
           echo "EIGENSCRIPT=$RUNNER_TEMP/eigs/src/eigenscript" >> "$GITHUB_ENV"
 
+      # Heuristic: planted-fault / mktemp trees must mention eigs.json
+      # (EigenScript #1106; bought eddy#18 + dynamics#39). Vendored from hq.
+      - name: Check TMP plants mention eigs.json
+        run: bash tools/check_tmp_eigs_json.sh
+
       - name: Run smoke tests
         run: bash tests/test_smoke.sh

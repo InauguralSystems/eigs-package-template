@@ -50,8 +50,9 @@ eigenscript mypkg.eigs
 bash tests/test_smoke.sh
 ```
 
-CI builds EigenScript from source on Linux and runs `tests/test_smoke.sh`
-on every push and PR. See `.github/workflows/test.yml`.
+CI builds EigenScript from source on Linux, runs `tools/check_tmp_eigs_json.sh`
+(TMP/mktemp plants must mention `eigs.json` — EigenScript #1106), then
+`tests/test_smoke.sh` on every push and PR. See `.github/workflows/test.yml`.
 
 ## Publish
 
